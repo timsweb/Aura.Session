@@ -286,7 +286,7 @@ class Session
      * @return null
      *
      */
-    protected function moveFlash()
+    public function moveFlash()
     {
         if (! isset($_SESSION[Session::FLASH_NEXT])) {
             $_SESSION[Session::FLASH_NEXT] = array();

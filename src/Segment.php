@@ -174,11 +174,13 @@ class Segment implements SegmentInterface
      * @param mixed $val The flash value itself.
      *
      */
-    public function setFlashNow($key, $val)
+    public function setFlashNow($key, $val, $nowOnly = false)
     {
         $this->resumeOrStartSession();
         $_SESSION[Session::FLASH_NOW][$this->name][$key] = $val;
-        $_SESSION[Session::FLASH_NEXT][$this->name][$key] = $val;
+        if (!$nowOnly) {
+            $_SESSION[Session::FLASH_NEXT][$this->name][$key] = $val;
+        }
     }
 
     /**
@@ -269,9 +271,14 @@ class Segment implements SegmentInterface
         }
     }
 
-    public function __get($name)
+    public function & __get($name)
     {
-        return $this->get($name);
+        $this->resumeSession();
+        if (!isset($_SESSION[$this->name][$name])) {
+            $_SESSION[$this->name][$name] = null;
+
+        }
+        return $_SESSION[$this->name][$name];
     }
 
     public function __set($name, $value)

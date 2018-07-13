@@ -10,13 +10,15 @@ namespace Aura\Session;
 
 /**
  *
- * A factory to create a Session manager.
+ * A factory to create a Session manager. Lets make session a singleton shall we?
  *
  * @package Aura.Session
  *
  */
 class SessionFactory
 {
+    private static $instance;
+
     /**
      *
      * Creates a new Session manager.
@@ -30,13 +32,26 @@ class SessionFactory
      */
     public function newInstance(array $cookies, $delete_cookie = null)
     {
+        if (self::$instance) {
+            return self::$instance;
+        }
+
         $phpfunc = new Phpfunc;
-        return new Session(
+        self::$instance = new Session(
             new SegmentFactory,
             new CsrfTokenFactory(new Randval($phpfunc)),
             $phpfunc,
             $cookies,
             $delete_cookie
         );
+        return self::$instance;
+    }
+
+    public static function get()
+    {
+        if (!self::$instance) {
+            throw new \RuntimeException('Session instance not setup by calling ' . __CLASS__. '::newInstance');
+        }
+        return self::$instance;
     }
 }

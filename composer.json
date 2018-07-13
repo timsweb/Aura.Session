@@ -21,6 +21,9 @@
         "php": ">=5.3.0"
     },
     "autoload": {
+        "files": [
+            "src/helper.php"
+        ],
         "psr-4": {
             "Aura\\Session\\": "src/",
             "Aura\\Session\\_Config\\": "config/"
