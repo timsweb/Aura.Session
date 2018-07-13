@@ -585,4 +585,9 @@ class Session
     {
         return $this->phpfunc->session_save_path();
     }
+
+    public function setSaveHandler(\SessionHandlerInterface $handler, $close = true)
+    {
+        return $this->phpfunc->session_set_save_handler($handler, $close);
+    }
 }
